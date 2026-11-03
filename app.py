@@ -157,23 +157,27 @@ st.markdown(
 )
 
 # ==========================================================
-# 📈 УЛЬТРАБЫСТРЫЙ СЧЕТЧИК ЯНДЕКС МЕТРИКИ (ИСПРАВЛЕННЫЙ)
+# 📈 УЛЬТРАБЫСТРЫЙ СЧЕТЧИК ЯНДЕКС МЕТРИКИ (ФИНАЛЬНЫЙ)
 # ==========================================================
-# Этот код адаптирован под iframe-песочницу Streamlit и не вызывает ошибок в консоли
 st.components.v1.html(
     """
     <script type="text/javascript">
-       (function(m,e,t,r,i,k,a){{m[i]=m[i]||function(){{(m[i].a=m[i].a||[]).push(arguments)}};
-       m[i].l=1*new Date();
-       k=e.createElement(t),a=e.getElementsByTagName("html")[0],k.async=1,k.src=r,a.appendChild(k)}})
-       (window, document, "script", "https://yandex.ru", "ym");
+       (function(m,e,t,r,i,k,a){
+           m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+           m[i].l=1*new Date();
+           k=e.createElement(t);
+           a=e.getElementsByTagName("html")[0]; /* Добавлен индекс [0] для стабильности */
+           k.async=1;
+           k.src=r;
+           a.appendChild(k);
+       })(window, document, "script", "https://yandex.ru", "ym");
 
-       ym(114050636, "init", {{
+       ym(114050636, "init", {
             clickmap:true,
             trackLinks:true,
             accurateTrackBounce:true,
             webvisor:true
-       }});
+       });
     </script>
     <noscript><div><img src="https://yandex.ru" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
     """,
