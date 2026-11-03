@@ -134,7 +134,7 @@ st.warning(
 
 st.markdown("### 📱 Контакты для связи:")
 st.markdown("**Телефон:** +7 937 599 0332")
-st.markdown("**Email:** [ваша_почта@yandex.ru](mailto:ваша_почта@yandex.ru)")
+st.markdown("**Email:** [mb0332@mail.ru](mailto:mb0332@mail.ru)")
 st.markdown("**Telegram / Макс / WhatsApp:** по номеру телефона или кнопкам выше.")
 
 # ==========================================================
