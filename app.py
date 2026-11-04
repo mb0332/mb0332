@@ -145,7 +145,7 @@ st.warning(
 
 st.markdown("### 📱 Контакты для связи:")
 st.markdown("**Телефон:** +7 937 599 0332")
-st.markdown("**Email:** [mb0332@yandex.ru](mailto:mb0332@yandex.ru)")  # Кликабельная почта после телефона
+st.markdown("**Email:** [mb0332@yandex.ru](mailto:mb0332@yandex.ru)")
 st.markdown("**Telegram / Макс / WhatsApp:** по номеру телефона или кнопкам выше.")
 
 # ==========================================================
@@ -168,14 +168,29 @@ st.markdown(
 )
 
 # ==========================================================
-# 📈 СЧЕТЧИК ЯНДЕКС МЕТРИКИ (ДЛЯ IFRAME)
+# 📈 РАБОЧИЙ СЧЕТЧИК ЯНДЕКС МЕТРИКИ (ЧЕРЕЗ WINDOW.PARENT)
 # ==========================================================
-# Этот метод принудительно открывает песочницу и отправляет данные в Яндекс
+# Замените 00000000 на ваш реальный номер счетчика Метрики
+COUNTER_ID = "114050636"
+
 st.components.v1.html(
-    """
-    <div style="position: absolute; left: -9999px;">
-        <img src="https://yandex.ru" style="position:absolute; left:-9999px;" alt="" />
-    </div>
+    f"""
+    <script>
+        // Инициализируем Яндекс Метрику в контексте родительского окна (в обход iframe песочницы)
+        (function(m,e,t,r,i,k,a){{m[i]=m[i]||function(){{(m[i].a=m[i].a||[]).push(arguments)}};
+        m[i].l=1*new Date();
+        for (var j = 0; j < e.length; j++) {{if (e[j].n === r) {{ return; }}}}
+        k=e.createElement(t),a=e.getElementsByTagName(t),k.async=1,k.src=r,a.parentNode.insertBefore(k,a)}})
+        (window.parent, window.parent.document, "script", "https://yandex.ru", "ym");
+
+        // Запуск счетчика со всеми функциями
+        window.parent.ym({COUNTER_ID}, "init", {{
+             clickmap:true,
+             trackLinks:true,
+             accurateTrackBounce:true,
+             webvisor:true
+        }});
+    </script>
     """,
     height=0,
 )
