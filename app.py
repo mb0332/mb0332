@@ -168,25 +168,44 @@ st.markdown(
 )
 
 # ==========================================================
-# 📈 РАБОЧИЙ СЧЕТЧИК ЯНДЕКС МЕТРИКИ (ЧЕРЕЗ ST.HTML)
+# 📈 ЯНДЕКС МЕТРИКА — ЛЕНИВАЯ ЗАГРУЗКА, БЕЗ WEBVISOR
 # ==========================================================
-COUNTER_ID = "114050636"  # Убедитесь, что это ваш реальный номер
+COUNTER_ID = "114050636"
 
 st.html(
     f"""
-    <script type="text/javascript">
-        (function(m,e,t,r,i,k,a){{m[i]=m[i]||function(){{(m[i].a=m[i].a||[]).push(arguments)}};
-        m[i].l=1*new Date();
-        for (var j = 0; j < document.scripts.length; j++) {{if (document.scripts[j].src === r) {{ return; }}}}
-        k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)}})
-        (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+    <script>
+    (function() {{
+        // Защита от повторной вставки при ререндерах Streamlit
+        if (window.__metrika_loaded) return;
+        window.__metrika_loaded = true;
 
-        ym({COUNTER_ID}, "init", {{
-            clickmap:true,
-            trackLinks:true,
-            accurateTrackBounce:true,
-            webvisor:true
-        }});
+        // Откладываем загрузку: не блокируем рендер страницы
+        function loadMetrika() {{
+            (function(m,e,t,r,i,k,a){{m[i]=m[i]||function(){{(m[i].a=m[i].a||[]).push(arguments)}};
+            m[i].l=1*new Date();
+            for (var j = 0; j < document.scripts.length; j++) {{if (document.scripts[j].src === r) {{ return; }}}}
+            k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)}})
+            (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+            ym({COUNTER_ID}, "init", {{
+                clickmap: true,          // карта кликов — лёгкая, оставляем
+                trackLinks: true,        // отслеживание внешних ссылок
+                accurateTrackBounce: true,
+                webvisor: false          // ❌ ОТКЛЮЧЕНО — главный источник тормозов
+            }});
+        }}
+
+        // Грузим после того, как страница отрисовалась + через 1.5 сек паузы,
+        // чтобы не конкурировать со скриптами Streamlit
+        if (document.readyState === "complete") {{
+            setTimeout(loadMetrika, 1500);
+        }} else {{
+            window.addEventListener("load", function() {{
+                setTimeout(loadMetrika, 1500);
+            }});
+        }}
+    }})();
     </script>
     <noscript><div><img src="https://mc.yandex.ru/watch/{COUNTER_ID}" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
     """,
